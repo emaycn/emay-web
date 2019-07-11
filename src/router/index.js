@@ -1,24 +1,32 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// 加载组件，如果需要懒加载请参阅文档
-import page1 from '../pages/page1.vue'
-import page2 from '../pages/page2.vue'
+import Dashboard from '@/pages/Dashboard'
+import Main from '@/pages/Main'
+
+import {
+  SystemRouter
+} from './system'
 
 Vue.use(Router)
 
-// routes要求为一个数组，path指定路由，component指定组件，更多配置及懒加载请参阅文档
-export default new Router({
-  routes: [
-    {
-      path: '/page1',
-      name: 'page1',
-      component: page1
-    },
-    {
-      path: '/page2',
-      name: 'page2',
-      component: page2
-    }
-  ]
+let routes = [{
+  path: '/',
+  component: Main,
+  hidden: true,
+  children: [{
+    path: '/',
+    component: Dashboard,
+    name: '首页'
+  }]
+}]
+
+for (let i in SystemRouter) {
+  routes.push(SystemRouter[i])
+}
+
+const router = new Router({
+  routes: routes
 })
+
+export default router

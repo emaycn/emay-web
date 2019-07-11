@@ -43,14 +43,16 @@ axios.interceptors.request.use(
 )
 
 // 异常及公共处理
-// axios.interceptors.response.use(response => {
-//   if (response.data.code === -222) {
-//     this.$store.commit('logOut')
-//   }
-// }, error => {
-//   console.log('err:' + error)
-//   return Promise.reject(error)
-// })
+axios.interceptors.response.use(response => {
+  if (response.data.code === -222) {
+    this.$store.commit('logOut')
+    location.reload()
+  }
+  return response
+}, error => {
+  console.log('err:' + error)
+  return Promise.reject(error)
+})
 
 // 将axios挂载到Vue原型上方便调用
 Vue.prototype.$axios = axios
