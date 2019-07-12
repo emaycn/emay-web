@@ -2,11 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Dashboard from '@/pages/Dashboard'
-import Main from '@/pages/Main'
+import Main from '@/components/template/Main'
 
-import {
-  SystemRouter
-} from './system'
+import {SystemRouter} from './system'
 
 Vue.use(Router)
 

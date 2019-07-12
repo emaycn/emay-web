@@ -23,6 +23,10 @@
 <script>
 
 import { mapActions } from 'vuex'
+import {post} from '@/utils/HttpUtils'
+import SystemConfig from '@/../static/SystemConfig'
+
+let imgpath = SystemConfig.SERVER_ADDERSS + 'loginCaptcha'
 
 let data = {
   form: {
@@ -30,7 +34,7 @@ let data = {
     password: '',
     captcha: ''
   },
-  src: '/api/loginCaptcha',
+  src: imgpath,
   msg: '',
   onLogging: false
 }
@@ -57,24 +61,24 @@ export default {
         this.onLogging = false
         return
       }
-      this.$axios.post('/api/login', {username: this.form.username, password: this.form.password, captcha: this.form.captcha})
+      post('login', {username: this.form.username, password: this.form.password, captcha: this.form.captcha})
         .then((response) => {
-          let data = response.data
-          if (data.success) {
-            this.logIn(data.result)
+          if (response.data.success) {
+            this.logIn(response.data.result)
           } else {
-            this.msg = data.message
+            this.msg = response.data.message
+            this.data.src = imgpath + '?' + new Date()
             this.onLogging = false
           }
         }).catch((err) => {
           console.log(err)
-          data.src = '/api/loginCaptcha?v=' + new Date()
+          data.src = imgpath + '?' + new Date()
         }).finally(() => {
           this.onLogging = false
         })
     },
     reflushCaptcha: function () {
-      data.src = '/api/loginCaptcha?v=' + new Date()
+      data.src = imgpath + '?' + new Date()
     }
   }
 }

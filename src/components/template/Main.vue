@@ -1,10 +1,12 @@
 <template>
-    <el-row class="container">
+<div>
+    <Login v-if="!myLogin()"></Login>
+    <el-row class="container" v-if="myLogin()">
         <el-col :span="24" class="main">
             <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
                 <section  class="header">
                     <div  v-if="!collapsed" style="padding-left:20px;text-align:center;font-size:x-large;float:left;cursor:pointer;" @click="gotoHome">
-                            {{systemName}}
+                            亿美数据平台
                     </div>
                     <div class="tools" style="text-align:center;float:left;" @click.prevent="collapse">
                         <i class="el-icon-menu"></i>
@@ -48,7 +50,7 @@
                     <el-col :span="24" class="userinfo">
                         <el-dropdown trigger="hover">
                             <span class="el-dropdown-link userinfo-inner">
-                                您好：管理员
+                                您好：{{userRealname()}}
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item>
@@ -62,14 +64,6 @@
                     </el-col>
                 </el-col>
                 <div class="grid-content bg-purple-light">
-                    <el-col :span="24" class="breadcrumb-container">
-                        <strong class="title">{{$route.name}}</strong>
-                        <el-breadcrumb separator="/" class="breadcrumb-inner">
-                            <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-                                {{ item.name }}
-                            </el-breadcrumb-item>
-                        </el-breadcrumb>
-                    </el-col>
                     <el-col :span="24" class="content-wrapper">
                         <transition name="fade" mode="out-in">
                             <router-view></router-view>
@@ -79,42 +73,34 @@
             </section>
         </el-col>
     </el-row>
+</div>
 </template>
 
 <script>
 
+import Login from '@/components/template/Login.vue'
+import { mapActions } from 'vuex'
+import { hasAuth, isLogin, currentUser } from '@/utils/AuthUtils'
+
 let data = () => {
   return {
-    systemName: '亿美数据平台',
-    systemUrl: '/',
     menuData: [],
-    collapsed: false,
-    sysUserName: '管理员'
-  }
-}
-
-let initMenu = function () {
-  for (let i in this.$router.options.routes) {
-    let root = this.$router.options.routes[i]
-    if (root.hidden) { continue }
-    let children = []
-    for (let j in root.children) {
-      let item = root.children[j]
-      if (item.hidden) { continue }
-      children.push(item)
-    }
-
-    if (children.length < 1) { continue }
-    this.menuData.push(root)
-    root.children = children
+    collapsed: false
   }
 }
 
 export default {
   data: data,
+  components: {Login},
   methods: {
-    initMenu: initMenu,
-    // 折叠导航栏
+    ...mapActions(['logOut']),
+    userRealname: function () {
+      let user = currentUser()
+      return user === null ? null : user.realname
+    },
+    myLogin: function () {
+      return isLogin()
+    },
     collapse: function () {
       this.collapsed = !this.collapsed
     },
@@ -122,18 +108,43 @@ export default {
       this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none'
     },
     changePass: function () {
+      // TODO
       console.log('changepass')
     },
     logout: function () {
-      console.log('logout')
+      this.logOut()
     },
     gotoHome: function () {
       this.$router.push('/')
+    },
+    initMenu: function () {
+      for (let i in this.$router.options.routes) {
+        let root = this.$router.options.routes[i]
+        if (!hasAuth(root.auth)) {
+          root.hidden = true
+          continue
+        }
+        let children = []
+        for (let j in root.children) {
+          let item = root.children[j]
+          if (!hasAuth(item.auth)) {
+            item.hidden = true
+            continue
+          }
+          children.push(item)
+        }
+        if (children.length < 1) {
+          continue
+        }
+        root.children = children
+        this.menuData.push(root)
+      }
     }
   },
   mounted: function () {
     this.initMenu()
   }
+
 }
 </script>
 
@@ -259,7 +270,7 @@ export default {
             // padding: 20px;
             background-color: #d3d7d4;
             .breadcrumb-container {
-                display: none;
+                display: block;
                 .title {
                     width: 200px;
                     float: left;
