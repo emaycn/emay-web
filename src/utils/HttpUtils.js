@@ -21,8 +21,8 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(response => {
-  if (response.data.code === -222) {
-    this.$store.commit('logOut')
+  if (response.data.code === '-222') {
+    store.commit('logOut')
   }
   return response
 }, error => {
@@ -31,6 +31,7 @@ axios.interceptors.response.use(response => {
 
 var fillHeader = function (headers) {
   headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+  headers['x-requested-with'] = 'XMLHttpRequest'
   if (store.state.webToken !== null) {
     headers['AUTH-WEB-TOKEN'] = store.state.webToken.sessionId
   }
