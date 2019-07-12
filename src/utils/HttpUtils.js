@@ -1,5 +1,6 @@
 import axios from 'axios'
-import SystemConfig from '@/../static/SystemConfig'
+import Vue from 'vue'
+import store from '@/store/index'
 
 // 发送请求时携带cookie
 axios.defaults.withCredentials = true
@@ -11,9 +12,7 @@ axios.interceptors.request.use(
   config => {
     let data = config.data
     let key = Object.keys(data)
-    console.log(config.data)
     config.data = encodeURI(key.map(name => `${name}=${data[name]}`).join('&'))
-    console.log(config.data)
     return config
   },
   error => {
@@ -30,43 +29,49 @@ axios.interceptors.response.use(response => {
   return Promise.reject(error)
 })
 
-export function get (url, params = {}, headers = {}) {
-  return axios({
-    url: SystemConfig.SERVER_ADDERSS + url,
-    method: 'get',
-    headers: headers,
-    params
-  })
-}
-
-export function post (url, data = {}, headers = {}) {
+var fillHeader = function (headers) {
   headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-  return axios({
-    url: SystemConfig.SERVER_ADDERSS + url,
-    method: 'post',
-    headers: headers,
-    data: data
-  })
+  if (store.state.webToken !== null) {
+    headers['AUTH-WEB-TOKEN'] = store.state.webToken.sessionId
+  }
+  return headers
 }
 
-export function put (url, data = {}, headers = {}) {
-  headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-  return axios({
-    url: SystemConfig.SERVER_ADDERSS + url,
-    method: 'put',
-    headers: headers,
-    data: data
-  })
-}
+export default {
+  get: function (url, params = {}, headers = {}) {
+    headers = fillHeader(headers)
+    return axios({
+      url: Vue.prototype.SystemConfig.SERVER_ADDERSS + url,
+      method: 'get',
+      headers: headers,
+      params
+    })
+  },
+  post: function (url, data = {}, headers = {}) {
+    headers = fillHeader(headers)
+    return axios({
+      url: Vue.prototype.SystemConfig.SERVER_ADDERSS + url,
+      method: 'post',
+      headers: headers,
+      data: data
+    })
+  },
+  put: function (url, data = {}, headers = {}) {
+    headers = fillHeader(headers)
+    return axios({
+      url: Vue.prototype.SystemConfig.SERVER_ADDERSS + url,
+      method: 'put',
+      headers: headers,
+      data: data
+    })
+  },
+  delete: function (url, headers = {}) {
+    headers = fillHeader(headers)
+    return axios({
+      url: Vue.prototype.SystemConfig.SERVER_ADDERSS + url,
+      method: 'delete',
+      headers: headers
+    })
+  }
 
-export function deletes (url, headers = {}) {
-  return axios({
-    url: SystemConfig.SERVER_ADDERSS + url,
-    method: 'delete',
-    headers: headers
-  })
-}
-
-export {
-  axios
 }

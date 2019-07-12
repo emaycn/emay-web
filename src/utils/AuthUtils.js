@@ -1,20 +1,19 @@
 import store from '@/store/index'
 
-let hasAuth = function (code) {
-  if (code === null) {
-    return true
+export default {
+  hasAuth: function (code) {
+    if (code === null) {
+      return true
+    }
+    return store.state.webToken.resources !== null && store.state.webToken.resources[code] === true
+  },
+  isLogin: function () {
+    return store.state.webToken.user !== null
+  },
+  currentUser: function () {
+    return store.state.webToken.user
+  },
+  webToken: function () {
+    return store.state.webToken
   }
-  return store.state.webToken.resources !== null && store.state.webToken.resources[code] === true
-}
-
-let isLogin = function () {
-  return store.state.webToken.user !== null
-}
-
-let currentUser = function () {
-  return store.state.webToken.user
-}
-
-export {
-  hasAuth, isLogin, currentUser
 }

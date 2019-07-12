@@ -1,6 +1,8 @@
-import Main from '@/components/template/Main'
+import Main from '@/pages/system/Main'
 import Role from '@/pages/system/Role'
 import User from '@/pages/system/User'
+
+import Vue from 'vue'
 
 const SystemRouter = [{
   path: '/system',
@@ -22,6 +24,23 @@ const SystemRouter = [{
     auth: 'ROLE_VIEW'
   }]
 }]
+
+var toMap = function () {
+  var map = {}
+  for (var i in SystemRouter) {
+    var children = SystemRouter[i].children
+    if (children === null || children.length === 0) {
+      continue
+    }
+    for (var j in children) {
+      var item = children[j]
+      map[item.path] = item.auth
+    }
+  }
+  return map
+}
+
+Vue.prototype.PAGE_AUTH = toMap()
 
 export {
   SystemRouter

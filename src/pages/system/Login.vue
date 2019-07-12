@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <p>欢迎登陆</p>
+    <p>亿美数据平台</p>
     <el-form ref="form" :modal="form" label-width="80px">
       <el-form-item label="账号">
         <el-input v-model="form.username" placeholder="请输入账号"></el-input>
@@ -23,28 +23,41 @@
 <script>
 
 import { mapActions } from 'vuex'
-import {post} from '@/utils/HttpUtils'
-import SystemConfig from '@/../static/SystemConfig'
 
-let imgpath = SystemConfig.SERVER_ADDERSS + 'loginCaptcha'
-
-let data = {
-  form: {
-    username: '',
-    password: '',
-    captcha: ''
-  },
-  src: imgpath,
-  msg: '',
-  onLogging: false
+function generateUUID () {
+  var d = new Date().getTime()
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0
+    d = Math.floor(d / 16)
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+  })
+  return uuid
 }
+
+var uuid = generateUUID()
+
+let data = {}
 
 export default {
   data: function () {
+    data = {
+      form: {
+        username: '',
+        password: '',
+        captcha: '',
+        uuid: uuid
+      },
+      src: this.getSrc(),
+      msg: '',
+      onLogging: false
+    }
     return data
   },
   methods: {
     ...mapActions(['logIn']),
+    getSrc: function () {
+      return this.SystemConfig.SERVER_ADDERSS + 'loginCaptcha?uuid=' + uuid + '&' + new Date().getTime()
+    },
     onSubmit: function (e) {
       if (this.onLogging) {
         this.msg = '正在登陆中'
@@ -61,24 +74,25 @@ export default {
         this.onLogging = false
         return
       }
-      post('login', {username: this.form.username, password: this.form.password, captcha: this.form.captcha})
+      this.HttpUtils.post('login', {username: this.form.username, password: this.form.password, captcha: this.form.captcha, uuid: this.form.uuid})
         .then((response) => {
           if (response.data.success) {
             this.logIn(response.data.result)
+            this.$router.go(0) // 刷新页面
           } else {
             this.msg = response.data.message
-            this.data.src = imgpath + '?' + new Date()
+            data.src = this.getSrc()
             this.onLogging = false
           }
         }).catch((err) => {
           console.log(err)
-          data.src = imgpath + '?' + new Date()
+          data.src = this.getSrc()
         }).finally(() => {
           this.onLogging = false
         })
     },
     reflushCaptcha: function () {
-      data.src = imgpath + '?' + new Date()
+      data.src = this.getSrc()
     }
   }
 }

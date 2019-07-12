@@ -78,28 +78,27 @@
 
 <script>
 
-import Login from '@/components/template/Login.vue'
+import Login from '@/pages/system/Login.vue'
 import { mapActions } from 'vuex'
-import { hasAuth, isLogin, currentUser } from '@/utils/AuthUtils'
 
-let data = () => {
-  return {
-    menuData: [],
-    collapsed: false
-  }
+let data = {
+  menuData: [],
+  collapsed: false
 }
 
 export default {
-  data: data,
+  data: function () {
+    return data
+  },
   components: {Login},
   methods: {
     ...mapActions(['logOut']),
     userRealname: function () {
-      let user = currentUser()
+      let user = this.AuthUtils.currentUser()
       return user === null ? null : user.realname
     },
     myLogin: function () {
-      return isLogin()
+      return this.AuthUtils.isLogin()
     },
     collapse: function () {
       this.collapsed = !this.collapsed
@@ -108,11 +107,14 @@ export default {
       this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none'
     },
     changePass: function () {
-      // TODO
-      console.log('changepass')
+      this.$router.push('/changePass')
     },
     logout: function () {
-      this.logOut()
+      this.HttpUtils.post('logout').then((response) => {
+        console.log('logout')
+      }).finally(() => {
+        this.logOut()
+      })
     },
     gotoHome: function () {
       this.$router.push('/')
@@ -120,14 +122,14 @@ export default {
     initMenu: function () {
       for (let i in this.$router.options.routes) {
         let root = this.$router.options.routes[i]
-        if (!hasAuth(root.auth)) {
+        if (!this.AuthUtils.hasAuth(root.auth)) {
           root.hidden = true
           continue
         }
         let children = []
         for (let j in root.children) {
           let item = root.children[j]
-          if (!hasAuth(item.auth)) {
+          if (!this.AuthUtils.hasAuth(item.auth)) {
             item.hidden = true
             continue
           }
