@@ -270,7 +270,7 @@ export default {
             flex: 1;
             overflow-y: auto;
             // padding: 20px;
-            background-color: #d3d7d4;
+            background-color: white;
             .breadcrumb-container {
                 display: block;
                 .title {
