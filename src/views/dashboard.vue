@@ -1,0 +1,9 @@
+<template>
+  <div>
+    <p>我是首页</p>
+  </div>
+</template>
+<script>
+</script>
+<style>
+</style>

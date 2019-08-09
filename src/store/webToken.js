@@ -1,49 +1,31 @@
-let ss = {
-  setItem: function (key, value) {
-    sessionStorage.setItem(key, JSON.stringify(value))
-  },
-  getItem: function (key) {
-    return JSON.parse(sessionStorage.getItem(key)) || null
-  },
-  removeItem: function (key) {
-    sessionStorage.removeItem(key)
-  }
-}
-
-let getItem = function (item) {
-  var token = ss.getItem('webToken')
-  return token == null ? null : token[item]
-}
-
+// 用户登录信息--用户信息、权限信息、Token信息
 export default {
   state: {
-    user: getItem('user'),
-    sessionId: getItem('sessionId'),
-    resources: getItem('resources'),
-    createTime: getItem('createTime')
+    token: null,
+    resources: null,
+    createTime: null,
+    user: null
   },
   mutations: {
-    logIn (state, token) {
-      ss.setItem('webToken', token)
-      state.user = token.user
-      state.sessionId = token.sessionId
-      state.resources = token.resources
-      state.createTime = token.createTime
+    LOGIN (state, webToken) {
+      state.token = webToken.token
+      state.createTime = webToken.createTime
+      state.resources = webToken.resources
+      state.user = webToken.user
     },
-    logOut (state) {
-      ss.removeItem('webToken')
-      state.user = null
-      state.sessionId = null
-      state.resources = null
+    LOGOUT (state) {
+      state.token = null
       state.createTime = null
+      state.resources = null
+      state.user = null
     }
   },
   actions: {
-    logIn ({commit}, token) {
-      commit('logIn', token)
+    logIn ({ commit }, webToken) {
+      commit('LOGIN', webToken)
     },
-    logOut ({commit}) {
-      commit('logOut')
+    logOut ({ commit }) {
+      commit('LOGOUT')
     }
   }
 }
