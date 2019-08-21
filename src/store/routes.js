@@ -12,10 +12,10 @@ export default {
     }
   },
   actions: {
-    replaceRoutes ({ commit }, routes) {
+    replaceRoutes({ commit }, routes) {
       commit('REPLACE_ROUTES', routes)
     },
-    deleteAllRoutes ({ commit }) {
+    deleteAllRoutes({ commit }) {
       commit('DELETE_ALL_ROUTES')
     }
   }

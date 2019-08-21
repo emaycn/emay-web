@@ -7,11 +7,14 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <span style="font-size:initial;">{{ userRealname() }}</span>
+          <span style="font-size:15px;">欢迎您:{{ userRealname() }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><!--divided-->
+          <router-link to="/changepass">
+            <el-dropdown-item>修改密码</el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -23,34 +26,29 @@
 <script>
 import Breadcrumb from './Breadcrumb.vue'
 import Hamburger from './Hamburger.vue'
+import { logOut } from '@/api/public/logout'// 接口
 
 export default {
+  name: 'NavBar',
   components: {
     Breadcrumb,
     Hamburger
   },
   methods: {
-    toggleSideBar () {
+    toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
-    sidbarOpend () {
+    sidbarOpend() {
       return this.$store.state.sidebar.opened
     },
-    logout () {
+    logout() {
       this.$store.commit('LOGOUT')
       this.$store.commit('DELETE_ALL_ROUTES')
-      this.HttpUtils.post('/logout')
-      this.SessionStorageUtils.set('store', this.$store.state, function (key, val) {
-        switch (key) {
-          case 'matched':
-            return null
-          default:
-            return val
-        }
-      })
+      logOut()
+      this.SessionStorageUtils.setStore()
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    userRealname () {
+    userRealname() {
       return this.$store.state.webToken.user === null ? '' : this.$store.state.webToken.user.realname
     }
   }
@@ -58,6 +56,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.navbar .right-menu .avatar-container .avatar-wrapper .el-icon-caret-bottom[data-v-2f9101d0] {
+    cursor: pointer;
+    position: absolute;
+    right: -16px;
+    top: 19px;
+    font-size: 13px;
+}
 .navbar {
   height: 50px;
   overflow: hidden;

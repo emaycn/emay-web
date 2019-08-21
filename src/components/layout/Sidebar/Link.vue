@@ -1,6 +1,6 @@
 
 <template>
-  <component :is="type" v-bind="linkProps(to)">
+  <component :is="type" v-bind="linkProps(to)" @click.native="testClick">
     <slot />
   </component>
 </template>
@@ -8,6 +8,7 @@
 <script>
 import { isExternal } from '@/utils/Validate'
 export default {
+  name: 'Link',
   props: {
     to: {
       type: String,
@@ -15,10 +16,10 @@ export default {
     }
   },
   computed: {
-    isExternal () {
+    isExternal() {
       return isExternal(this.to)
     },
-    type () {
+    type() {
       if (this.isExternal) {
         return 'a'
       }
@@ -26,7 +27,13 @@ export default {
     }
   },
   methods: {
-    linkProps (to) {
+    testClick() {
+      const { fullPath } = this.$route
+      this.$router.replace({
+        path: fullPath
+      })
+    },
+    linkProps(to) {
       if (this.isExternal) {
         return {
           href: to,

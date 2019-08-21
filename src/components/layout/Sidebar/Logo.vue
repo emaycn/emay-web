@@ -23,7 +23,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       title: '亿美数据平台',
       logo: logoImg

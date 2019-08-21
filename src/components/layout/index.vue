@@ -7,7 +7,8 @@
         <navbar />
         <tags-view />
       </div>
-      <app-main />
+      <app-main class="app-amin " />
+      <Footer />
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import AppMain from './AppMain'
 import Navbar from './Navbar/index.vue'
 import Sidebar from './Sidebar/index.vue'
 import TagsView from './TagsView/index.vue'
+import Footer from './Footer/index.vue'
 
 export default {
   name: 'Layout',
@@ -25,10 +27,11 @@ export default {
     AppMain,
     Navbar,
     Sidebar,
-    TagsView
+    TagsView,
+    Footer
   },
   computed: {
-    classObj () {
+    classObj() {
       return {
         hideSidebar: !this.$store.state.sidebar.opened,
         openSidebar: this.$store.state.sidebar.opened
@@ -79,5 +82,8 @@ export default {
 
   .mobile .fixed-header {
     width: 100%;
+  }
+  .app-main{
+    margin-bottom:50px;
   }
 </style>

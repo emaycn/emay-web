@@ -2,16 +2,16 @@ import store from '@/store'
 import router from '@/router'
 
 export default {
-  hasAuth: function (code) {
+  hasAuth: function(code) {
     if (code === null || code === undefined) {
       return true
     }
     return store.state.webToken.resources !== null && store.state.webToken.resources[code] === true
   },
-  isLogin: function () {
+  isLogin: function() {
     return store.state.webToken.user !== null
   },
-  resetRoutes: function () {
+  resetRoutes: function() {
     const newAuthRoute = []
     for (const i in router.options.routes) {
       const root = router.options.routes[i]
@@ -36,7 +36,7 @@ export default {
     }
     store.commit('REPLACE_ROUTES', newAuthRoute)
   },
-  resetTagsView: function () {
+  resetTagsView: function() {
     const newVisitedViews = []
     if (store.state.tagsView.visitedViews) {
       for (const i in store.state.tagsView.visitedViews) {
@@ -46,11 +46,12 @@ export default {
         }
       }
     }
-    store.commit('DEL_ALL_VISITED_VIEWS')
-    store.commit('DEL_ALL_CACHED_VIEWS')
+    store.dispatch('delAllVisitedViews')
     for (const j in newVisitedViews) {
-      store.commit('ADD_VISITED_VIEW', newVisitedViews[j])
-      store.commit('ADD_CACHED_VIEW', newVisitedViews[j])
+      store.dispatch('addVisitedView', newVisitedViews[j])
     }
+  },
+  resetKeepalive: function() {
+    store.dispatch('delAllCachedViews')
   }
 }

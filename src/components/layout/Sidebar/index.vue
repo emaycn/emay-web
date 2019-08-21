@@ -13,7 +13,12 @@
         mode="vertical"
       >
         <!-- 侧边栏渲染 -->
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <template v-for="route in routes">
+          <template v-if="hasShowingChild(route)">
+            <sidebar-item :key="route.path" :item="route" :base-path="route.path" />
+          </template>
+        </template>
+
       </el-menu>
     </el-scrollbar>
   </div>
@@ -25,24 +30,34 @@ import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
 
 export default {
+  name: 'SideBar',
   components: { SidebarItem, Logo },
   computed: {
-    activeMenu () {
+    activeMenu() {
       const route = this.$route
-      const { meta, path } = route
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
+      const { path } = route
       return path
     },
-    variables () {
+    variables() {
       return variables
     },
-    isCollapse () {
+    isCollapse() {
       return !this.$store.state.sidebar.opened
     },
-    routes () {
+    routes() {
       return this.$store.state.routes.array
+    }
+  },
+  methods: {
+    hasShowingChild(route) {
+      const showingChildren = route.children.filter(item => {
+        if (item.hidden) {
+          return false
+        } else {
+          return true
+        }
+      })
+      return showingChildren.length > 0
     }
   }
 }

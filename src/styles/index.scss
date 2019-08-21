@@ -189,3 +189,7 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+//table 斑马线
+.el-table .success-row {
+  background: #f0f9eb;
+}

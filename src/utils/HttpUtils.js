@@ -1,14 +1,14 @@
 import axios from 'axios'
 import store from '@/store'
 import { MessageBox, Message } from 'element-ui'
-import SystemConfig from '@/../static/SystemConfig'
+import SystemConfig from '@/../public/static/SystemConfig'
 
 // 发送请求时携带cookie
 axios.defaults.withCredentials = true
 
 const service = axios.create({
   baseURL: SystemConfig.SERVER_ADDERSS, // url = base url + request url
-  timeout: 30000 // / 设置超时时间为30s
+  timeout: SystemConfig.HTTP_TIMEOUT // / 设置超时时间为30s
 })
 
 service.interceptors.request.use(
@@ -31,7 +31,7 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(response => {
-  if (Number(response.data.code) !== 0) {
+  if (!response.data.success) {
     if (response.data.code === -222) {
       MessageBox.confirm('您已经登出，请登出后再次登录', '确认登出', {
         confirmButtonText: '重新登录',
@@ -48,7 +48,7 @@ service.interceptors.response.use(response => {
       return Promise.reject(new Error(response.data.message || 'Error'))
     }
   } else {
-    return response
+    return response.data
   }
 }, error => {
   console.log('err' + error) // for debug

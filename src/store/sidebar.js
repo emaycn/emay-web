@@ -9,7 +9,7 @@ export default {
     }
   },
   actions: {
-    toggleSideBar ({ commit }) {
+    toggleSideBar({ commit }) {
       commit('TOGGLE_SIDEBAR')
     }
   }

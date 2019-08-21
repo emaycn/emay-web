@@ -9,10 +9,8 @@
         <el-button icon="arrow-left" class="pan-back-btn" @click="back">
           返回上一页
         </el-button>
-        <el-button icon="arrow-left" class="pan-back-btn" @click="back">
-          <router-link to="/dashboard">
-            返回首页
-          </router-link>
+        <el-button icon="arrow-left" class="pan-back-btn" @click="backDashboard">
+          返回首页
         </el-button>
       </el-col>
       <el-col :span="12">
@@ -26,19 +24,24 @@
 import errGif from '@/assets/images/404.gif'
 
 export default {
-  name: 'Page401',
-  data () {
+  name: 'Error',
+  data() {
     return {
       errGif: errGif + '?' + +new Date()
     }
   },
   methods: {
-    back () {
+    back() {
+      this.$store.dispatch('delVisitedView', this.$route)
       if (this.$route.query.noGoBack) {
         this.$router.push({ path: '/dashboard' })
       } else {
         this.$router.go(-2)
       }
+    },
+    backDashboard() {
+      this.$store.dispatch('delVisitedView', this.$route)
+      this.$router.push({ path: '/dashboard' })
     }
   }
 }

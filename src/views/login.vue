@@ -55,6 +55,7 @@
           name="captcha"
           type="text"
           style="width: 200px;"
+          @keydown.enter.native="submit"
         />
         <img
           :src="src"
@@ -63,7 +64,7 @@
         >
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native="handleLogin">登录</el-button>
 
     </el-form>
 
@@ -73,13 +74,13 @@
 <script>
 
 import UUID from '@/utils/Uuid'
-
+import { login } from '@/api/public/login'// 接口
 var uuid = UUID.gen()
 let data = {}
 
 export default {
   name: 'Login',
-  data: function () {
+  data: function() {
     const validateUsername = (rule, value, callback) => {
       if (value === null || value.length < 4) {
         callback(new Error('请输入正确的用户名'))
@@ -125,7 +126,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         const query = route.query
         if (query) {
           this.redirect = query.redirect
@@ -135,17 +136,17 @@ export default {
       immediate: true
     }
   },
-  mounted () {
+  mounted() {
     this.$refs.username.focus()
   },
   methods: {
-    getSrc: function () {
+    getSrc: function() {
       return this.SystemConfig.SERVER_ADDERSS + 'loginCaptcha?uuid=' + uuid + '&' + new Date().getTime()
     },
-    reflushCaptcha: function () {
+    reflushCaptcha: function() {
       data.src = this.getSrc()
     },
-    showPwd () {
+    showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -155,15 +156,19 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin () {
+    submit() {
+      this.handleLogin()
+    },
+    handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.HttpUtils.post('/login', this.loginForm)
+          login(this.loginForm)
             .then(response => {
-              this.$store.commit('LOGIN', response.data.result)
-              this.AuthUtils.resetRoutes()
+              this.$store.commit('LOGIN', response.result)
               this.AuthUtils.resetTagsView()
+              this.AuthUtils.resetKeepalive()
+              this.AuthUtils.resetRoutes()
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
@@ -172,12 +177,11 @@ export default {
               this.loading = false
             })
         } else {
-          console.log('参数错误!!')
           return false
         }
       })
     },
-    getOtherQuery (query) {
+    getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
         if (cur !== 'redirect') {
           acc[cur] = query[cur]

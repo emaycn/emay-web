@@ -7,13 +7,13 @@ export default {
     user: null
   },
   mutations: {
-    LOGIN (state, webToken) {
-      state.token = webToken.token
+    LOGIN(state, webToken) {
+      state.token = webToken.sessionId
       state.createTime = webToken.createTime
       state.resources = webToken.resources
       state.user = webToken.user
     },
-    LOGOUT (state) {
+    LOGOUT(state) {
       state.token = null
       state.createTime = null
       state.resources = null
@@ -21,10 +21,10 @@ export default {
     }
   },
   actions: {
-    logIn ({ commit }, webToken) {
+    logIn({ commit }, webToken) {
       commit('LOGIN', webToken)
     },
-    logOut ({ commit }) {
+    logOut({ commit }) {
       commit('LOGOUT')
     }
   }
