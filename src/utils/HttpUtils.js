@@ -1,14 +1,13 @@
 import axios from 'axios'
 import store from '@/store'
 import { MessageBox, Message } from 'element-ui'
-import SystemConfig from '@/../public/static/SystemConfig'
 
 // 发送请求时携带cookie
 axios.defaults.withCredentials = true
 
 const service = axios.create({
-  baseURL: SystemConfig.SERVER_ADDERSS, // url = base url + request url
-  timeout: SystemConfig.HTTP_TIMEOUT // / 设置超时时间为30s
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  timeout: 30000 // / 设置超时时间为30s
 })
 
 service.interceptors.request.use(

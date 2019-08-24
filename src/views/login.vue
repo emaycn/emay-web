@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     getSrc: function() {
-      return this.SystemConfig.SERVER_ADDERSS + 'loginCaptcha?uuid=' + uuid + '&' + new Date().getTime()
+      return process.env.VUE_APP_BASE_API + 'loginCaptcha?uuid=' + uuid + '&' + new Date().getTime()
     },
     reflushCaptcha: function() {
       data.src = this.getSrc()

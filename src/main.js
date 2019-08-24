@@ -19,7 +19,6 @@ import '@/styles/index.scss'
 // icon
 import '@/components/icons'
 // properties
-import SystemConfig from '@/../public/static/SystemConfig'
 import AuthUtils from '@/utils/AuthUtils'
 import HttpUtils from '@/utils/HttpUtils'
 import SessionStorageUtils from '@/utils/SessionStorageUtils'
@@ -38,7 +37,6 @@ Vue.use(Element, { size: 'small' })
 // 设置 Vue.config.productionTip = false 来关闭生产模式下给出的提示
 Vue.config.productionTip = false
 // 将Utils加载到VUE原型
-Vue.prototype.SystemConfig = SystemConfig
 Vue.prototype.AuthUtils = AuthUtils
 Vue.prototype.HttpUtils = HttpUtils
 Vue.prototype.SessionStorageUtils = SessionStorageUtils

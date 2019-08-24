@@ -19,6 +19,8 @@ export default {
     window.addEventListener('beforeunload', () => {
       SessionStorageUtils.setStore()
     })
+    // 测试 appconfig.js 是否可用
+    console.log(window.g.production_domain)
   }
 }
 </script>

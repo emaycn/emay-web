@@ -6,7 +6,9 @@ emay-web 是以 [vue-element-admin](http://172.16.11.138/component/open/vue-elem
 1. 项目初始化命令： npm install
 2. 项目启动命令： npm run dev
 3. 项目打包命令： npm build
-4. 在public/static/SystemConfig.js 中配置后台地址
+4. .env.development 中配置开发环境变量
+5. .env.production 中配置线上环境变量
+6. 基础API地址 开发环境是 http://127.0.0.1:8081/api/ 线上环境是 /api/
 
 # 开发须知
 1. 页面结构：一级为导航、二级为为页面
