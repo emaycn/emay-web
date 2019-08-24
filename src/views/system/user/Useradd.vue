@@ -70,7 +70,8 @@
   </div>
 </template>
 <script>
-import { getTree, showChildrenNode, alongRoles, addConfirm } from '@/api/system/user'// 接口
+import { alongRoles, addConfirm } from '@/api/system/user'// 接口
+import { treeLists, treechildrenList } from '@/api/system/department'// 接口
 import { user_name, real_name, phone, userEmail } from '@/utils/Validate' // validate 验证
 export default {
   name: 'Useradd',
@@ -187,7 +188,7 @@ export default {
     },
     // 异步加载叶子节点数据函数
     getIndex(node, resolve) {
-      showChildrenNode({ // 请求子级部门
+      treechildrenList({ // 请求子级部门
         id: node.data.id
       }).then(response => {
         resolve(response.result)
@@ -195,7 +196,7 @@ export default {
     },
     // 首次加载一级节点数据函数
     requestTree(resolve) {
-      getTree({}).then(response => { // 初始加载请求一级部门树
+      treeLists({}).then(response => { // 初始加载请求一级部门树
         resolve(response.result)
         this.defaultProps.label = 'departmentName' // 给一级部门树赋值
       })

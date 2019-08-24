@@ -8,7 +8,6 @@
         <tags-view />
       </div>
       <app-main class="app-amin " />
-      <Footer />
     </div>
   </div>
 </template>
@@ -19,7 +18,6 @@ import AppMain from './AppMain'
 import Navbar from './Navbar/index.vue'
 import Sidebar from './Sidebar/index.vue'
 import TagsView from './TagsView/index.vue'
-import Footer from './Footer/index.vue'
 
 export default {
   name: 'Layout',
@@ -27,8 +25,7 @@ export default {
     AppMain,
     Navbar,
     Sidebar,
-    TagsView,
-    Footer
+    TagsView
   },
   computed: {
     classObj() {

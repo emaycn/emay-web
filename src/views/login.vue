@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">亿美数据平台</h3>
+        <h1 class="title">亿美数据平台</h1>
       </div>
 
       <el-form-item prop="username">
@@ -36,7 +36,6 @@
             tabindex="2"
             autocomplete="on"
             @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -53,6 +52,7 @@
           v-model="loginForm.captcha"
           placeholder="请输入验证码"
           name="captcha"
+          tabindex="3"
           type="text"
           style="width: 200px;"
           @keydown.enter.native="submit"
@@ -134,6 +134,16 @@ export default {
         }
       },
       immediate: true
+    }
+  },
+  created() {
+    if (!window.sessionStorage) {
+      this.$message({
+        showClose: true,
+        message: '请启用sessionStorage，再访问页面',
+        duration: 0,
+        type: 'warning'
+      })
     }
   },
   mounted() {
@@ -282,7 +292,7 @@ $light_gray:#eee;
     position: relative;
 
     .title {
-      font-size: 26px;
+      font-size: 36px;
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;

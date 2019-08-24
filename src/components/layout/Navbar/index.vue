@@ -42,9 +42,16 @@ export default {
       return this.$store.state.sidebar.opened
     },
     logout() {
+      logOut().then(response => {
+        this.dologout()
+      }).catch(error => {
+        console.log(error)
+        this.dologout()
+      })
+    },
+    dologout() {
       this.$store.commit('LOGOUT')
       this.$store.commit('DELETE_ALL_ROUTES')
-      logOut()
       this.SessionStorageUtils.setStore()
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },

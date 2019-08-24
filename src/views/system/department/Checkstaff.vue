@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
       <el-form :inline="true" class="demo-form-inline">
-        <span style="font-size:14px;font-weight:bold;color:#606266;">部门名称：{{ depName }}</span>
+        <h3>部门名称：{{ depName }}</h3>
       </el-form>
 
     </div>
@@ -45,22 +45,26 @@
           <span>{{ scope.row.realname }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部门" align="center" min-width="20%">
-        <template slot-scope="scope">
-          <span>{{ scope.row.department }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="上级部门" align="center" min-width="20%">
-        <template slot-scope="scope">
-          <span>{{ scope.row.parentDepartment }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="手机号" align="center" min-width="20%">
         <template slot-scope="scope">
           <span>{{ scope.row.mobile }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="邮箱" align="center" min-width="20%">
+        <template slot-scope="scope">
+          <span>{{ scope.row.email }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="角色" align="center" min-width="20%">
+        <template slot-scope="scope">
+          <span>{{ scope.row.rolename }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" min-width="20%">
+        <template slot-scope="scope">
+          <span>{{ coverState(scope.row.userState) }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -142,6 +146,13 @@ export default {
         return 'success-row'
       }
       return ''
+    },
+    coverState(userState) {
+      if (userState === 1) {
+        return '启用'
+      } else {
+        return '停用'
+      }
     }
   }
 }

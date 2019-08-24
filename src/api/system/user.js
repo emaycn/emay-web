@@ -55,23 +55,6 @@ export function handleResetMethod(data) {
     data: data
   })
 }
-
-// 部门树
-export function getTree(data) {
-  return request({
-    url: '/user/getTree',
-    method: 'post',
-    data: data
-  })
-}
-// 树子节点
-export function showChildrenNode(data) {
-  return request({
-    url: '/user/showChildrenNode',
-    method: 'post',
-    data: data
-  })
-}
 // 所属角色
 export function alongRoles(data) {
   return request({

@@ -10,13 +10,13 @@
       class="ruleForm"
     >
       <el-form-item label="用户名：" prop="username">
-        <el-input v-model="ruleForm.username" />
+        <el-input v-model="ruleForm.username" readonly :disabled="true" />
       </el-form-item>
       <el-form-item label="姓名：" prop="realname">
         <el-input v-model="ruleForm.realname" maxlength="10" />
       </el-form-item>
       <el-form-item label="所属部门：" prop="departmentId">
-        <el-input v-model="ruleForm.departmentName" disabled>
+        <el-input v-model="ruleForm.departmentName" readonly>
           <el-button slot="append" icon="el-icon-arrow-down" @click="isShowTree" />
         </el-input>
         <div class="tree">
@@ -57,7 +57,8 @@
   </div>
 </template>
 <script>
-import { getTree, showChildrenNode, alongRoles, handleUpdateMethod, handleUpdateConfirmMethod } from '@/api/system/user'// 接口
+import { alongRoles, handleUpdateMethod, handleUpdateConfirmMethod } from '@/api/system/user'// 接口
+import { treeLists, treechildrenList } from '@/api/system/department'// 接口
 import { user_name, real_name, phone, userEmail } from '@/utils/Validate' // validate 验证
 export default {
   name: 'Usermodify',
@@ -160,7 +161,7 @@ export default {
         this.ruleForm = response.result.user
         this.ruleForm.departmentName = response.result.department.departmentName // 所属部门
         this.ruleForm.departmentId = response.result.department.id // 所属部门id
-        var choosedRoles = response.result.user.roles
+        var choosedRoles = response.result.roleList
         for (let i = 0; i < choosedRoles.length; i++) {
           this.favourableForm.push(choosedRoles[i])
         }
@@ -187,7 +188,7 @@ export default {
     },
     // 异步加载叶子节点数据函数
     getIndex(node, resolve) {
-      showChildrenNode({ // 请求子级部门
+      treechildrenList({ // 请求子级部门
         id: node.data.id
       }).then(response => {
         resolve(response.result)
@@ -195,7 +196,7 @@ export default {
     },
     // 首次加载一级节点数据函数
     requestTree(resolve) {
-      getTree({}).then(response => { // 初始加载请求一级部门树
+      treeLists({}).then(response => { // 初始加载请求一级部门树
         resolve(response.result)
         this.defaultProps.label = 'departmentName' // 给一级部门树赋值
       })
@@ -215,7 +216,6 @@ export default {
           const roleStrings = this.favourableForm.join(',')
           handleUpdateConfirmMethod({
             userId: this.$route.query.id,
-            username: this.ruleForm.username,
             realname: this.ruleForm.realname,
             departmentId: this.ruleForm.departmentId,
             mobile: this.ruleForm.mobile,

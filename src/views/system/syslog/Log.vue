@@ -5,6 +5,9 @@
         <el-form-item label="操作用户:">
           <el-input v-model="listQuery.username" />
         </el-form-item>
+        <el-form-item label="操作用户姓名:">
+          <el-input v-model="listQuery.realname" />
+        </el-form-item>
         <el-form-item label="开始时间:">
           <el-date-picker
             v-model="listQuery.startDate"
@@ -59,14 +62,19 @@
           <span>{{ scope.row.module }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="功能模块" align="center" min-width="15%">
+      <el-table-column label="操作类型" align="center" min-width="15%">
         <template slot-scope="scope">
-          <span>{{ scope.row.operType }}</span>
+          <span>{{ coverType(scope.row.operType) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作用户" align="center" min-width="15%">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作用户姓名" align="center" min-width="15%">
+        <template slot-scope="scope">
+          <span>{{ scope.row.realname }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作时间" align="center" min-width="20%">
@@ -110,6 +118,7 @@ export default {
       content: '',
       date: '',
       username: '',
+      realname: '',
       totalPage: '',
       currentPageNum: '',
       listLoading: false,
@@ -153,6 +162,19 @@ export default {
         return 'success-row'
       }
       return ''
+    },
+    coverType(type) {
+      if (type === 'ADD') {
+        return '新增'
+      } else if (type === 'SELECT') {
+        return '查询'
+      } else if (type === 'MODIFY') {
+        return '修改'
+      } else if (type === 'DELETE') {
+        return '删除'
+      } else {
+        return '其他'
+      }
     }
   }
 }

@@ -11,6 +11,16 @@
         <el-form-item label="手机号:">
           <el-input v-model="listQuery.mobile" />
         </el-form-item>
+        <el-form-item label="状态:">
+          <el-select v-model="listQuery.userState" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="">
           <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
         </el-form-item>
@@ -50,12 +60,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="部门" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.department }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column label="手机号" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.mobile }}</span>
@@ -68,19 +72,31 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="部门" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.department }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="角色" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.rolename }}</span>
         </template>
       </el-table-column>
 
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <span>{{ coverState(scope.row.userState) }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="操作" align="center" width="400">
         <template slot-scope="{row}">
-          <!-- 1--停用,2--启用 -->
-          <el-button v-if="row.userState!='2' && row.id!='1'" size="mini" type="warning" @click="handOn(row)">
+          <!-- 0--停用,1--启用 -->
+          <el-button v-if="AuthUtils.hasAuth('USER_OPER') && row.userState === 0 && row.id!='1'" size="mini" type="warning" @click="handOn(row)">
             启用
           </el-button>
-          <el-button v-if="row.userState!='1' && row.id!='1'" size="mini" type="warning" @click="handOff(row)">
+          <el-button v-if="AuthUtils.hasAuth('USER_OPER') && row.userState === 1 && row.id!='1'" size="mini" type="warning" @click="handOff(row)">
             停用
           </el-button>
           <el-button v-if="AuthUtils.hasAuth('USER_MODIFY') && row.id!='1'" type="primary" size="mini" @click="handleUpdate(row)">
@@ -89,7 +105,7 @@
           <el-button v-if="AuthUtils.hasAuth('USER_DELETE') && row.id!='1'" size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
-          <el-button v-if="row.id!='1'" size="mini" type="success" @click="handleReset(row)">
+          <el-button v-if="AuthUtils.hasAuth('USER_OPER') && row.id!='1'" size="mini" type="success" @click="handleReset(row)">
             重置密码
           </el-button>
         </template>
@@ -128,6 +144,16 @@ export default {
       username: '', // 用户名
       realname: '', // 姓名
       mobile: '', // 手机号
+      options: [{
+        value: '-999',
+        label: '全部'
+      }, {
+        value: '1',
+        label: '启用'
+      }, {
+        value: '0',
+        label: '停用'
+      }],
       listQuery: {
         start: 0, // 起始数据位置
         limit: 20 // 数据条数
@@ -267,6 +293,13 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    coverState(userState) {
+      if (userState === 1) {
+        return '启用'
+      } else {
+        return '停用'
+      }
     }
   }
 }

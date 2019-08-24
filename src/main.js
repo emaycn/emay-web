@@ -23,7 +23,7 @@ import SystemConfig from '@/../public/static/SystemConfig'
 import AuthUtils from '@/utils/AuthUtils'
 import HttpUtils from '@/utils/HttpUtils'
 import SessionStorageUtils from '@/utils/SessionStorageUtils'
-import { parseTime } from '@/utils/ParseTime'
+import { parseTime } from '@/utils/CommonUtils'
 Vue.filter('parseTime', function(value) {
   return parseTime(value)
 })
@@ -59,20 +59,25 @@ router.beforeEach(async(to, from, next) => {
   }
 
   if (AuthUtils.isLogin()) {
-    // 已经登录的，不能跳到登陆页面，跳到首页
-    if (to.path === '/login') {
-      next({ path: '/' })
+    if (to.path !== '/changepass' && (store.state.webToken.user.lastChangePasswordTime === null || store.state.webToken.user.lastChangePasswordTime === undefined)) {
+      next({ path: '/changepass', query: { msg: '首次登陆，请修改密码' }})
       NProgress.done()
     } else {
-      if (to.matched.length === 0) {
-        next('/404')// 未知页面调错误页
-        NProgress.done()
-      } else if (to.meta && !AuthUtils.hasAuth(to.meta.auth)) {
-        next('/404')// 无权限跳404
+      // 已经登录的，不能跳到登陆页面，跳到首页
+      if (to.path === '/login') {
+        next({ path: '/' })
         NProgress.done()
       } else {
-        next()
-        NProgress.done()
+        if (to.matched.length === 0) {
+          next('/404')// 未知页面调错误页
+          NProgress.done()
+        } else if (to.meta && !AuthUtils.hasAuth(to.meta.auth)) {
+          next('/404')// 无权限跳404
+          NProgress.done()
+        } else {
+          next()
+          NProgress.done()
+        }
       }
     }
   } else {

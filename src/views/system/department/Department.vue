@@ -141,7 +141,7 @@ export default {
       add: {
         supdep: '',
         department: '',
-        supId: 1,
+        supId: 0,
         parentSupId: ''
       },
       rules: {

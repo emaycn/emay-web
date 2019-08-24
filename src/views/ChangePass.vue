@@ -1,5 +1,6 @@
 <template>
-  <div class="changepass">
+  <div class="changepass app-container">
+    <h1>{{ getMsg() }}</h1>
     <el-form
       ref="ruleForm"
       :model="ruleForm"
@@ -90,14 +91,12 @@ export default {
                 message: '密码修改成功，请重新登录',
                 type: 'success'
               })
-              setTimeout(() => {
-                this.$store.dispatch('delVisitedView', this.$route)
-                this.$store.commit('LOGOUT')
-                this.$store.commit('DELETE_ALL_ROUTES')
-                logOut()
-                this.SessionStorageUtils.setStore()
-              }, 500)
-              this.$router.push(`/login`)
+              logOut().then(response => {
+                this.dologout()
+              }).catch(error => {
+                console.log(error)
+                this.dologout()
+              })
             })
             .catch(error => {
               this.$message.error(error)
@@ -107,10 +106,20 @@ export default {
         }
       })
     },
+    dologout() {
+      this.$store.commit('LOGOUT')
+      this.$store.commit('DELETE_ALL_ROUTES')
+      this.$store.dispatch('delVisitedView', this.$route)
+      this.SessionStorageUtils.setStore()
+      this.$router.push(`/login`)
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$store.dispatch('delVisitedView', this.$route)
       this.$router.push('/')
+    },
+    getMsg() {
+      return this.$route.query.msg
     }
   }
 }
@@ -118,16 +127,17 @@ export default {
 
 <style scoped>
 .changepass {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+     width: 100%;
+  margin:10% auto;
+}
+.changepass h1{
+  text-align:center;
+  margin:0;
+  padding:0;
 }
 .ruleForm {
   width: 700px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin:60px auto;
 }
 span {
   color: rgb(49, 47, 47);
