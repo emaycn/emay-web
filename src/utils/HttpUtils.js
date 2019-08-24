@@ -15,7 +15,7 @@ service.interceptors.request.use(
   config => {
     const data = config.data
     if (data !== null && data !== undefined) {
-      const key = Object.keys(data)
+      const key = Object.keys(data).filter(name => !(data[name] === null || data[name] === undefined))
       config.data = encodeURI(key.map(name => `${name}=${data[name]}`).join('&'))
     }
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'

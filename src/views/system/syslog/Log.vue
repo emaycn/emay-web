@@ -15,6 +15,8 @@
             placeholder="选择日期时间"
             format="yyyy-MM-dd HH:mm:ss"
             value-format="yyyy-MM-dd HH:mm:ss"
+            :picker-options="pickerOptionsStart"
+            default-time="00:00:00"
           />
         </el-form-item>
         <el-form-item label="结束时间:">
@@ -24,6 +26,8 @@
             placeholder="选择日期时间"
             format="yyyy-MM-dd HH:mm:ss"
             value-format="yyyy-MM-dd HH:mm:ss"
+            :picker-options="pickerOptionsEnd"
+            default-time="23:59:59"
           />
         </el-form-item>
         <el-form-item label="内容:">
@@ -125,6 +129,20 @@ export default {
       listQuery: {
         start: 0,
         limit: 20
+      },
+      pickerOptionsStart: {
+        disabledDate: time => {
+          if (this.listQuery.endDate) {
+            return time.getTime() > new Date(this.listQuery.endDate).getTime()
+          }
+        }
+      },
+      pickerOptionsEnd: {
+        disabledDate: time => {
+          if (this.listQuery.startDate) {
+            return time.getTime() < new Date(this.listQuery.startDate).getTime()
+          }
+        }
       }
     }
   },
