@@ -78,7 +78,7 @@
       </el-main>
     </el-container>
     <!-- 新增部门弹框 -->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" width="30%" top="25vh">
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" width="570px" top="25vh">
       <el-form ref="dataForm" v-model="add" :model="add" label-width="120px" style="width: 350px; margin-left:50px;" :rules="rules">
         <el-form-item label="部门名称:" props="department">
           <el-input v-model="add.department" />
