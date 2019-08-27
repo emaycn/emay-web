@@ -1,5 +1,6 @@
 import store from '@/store'
 import router from '@/router'
+import { deepClone } from '@/utils/CommonUtils'
 
 export default {
   hasAuth: function(code) {
@@ -12,9 +13,10 @@ export default {
     return store.state.webToken.user !== null
   },
   resetRoutes: function() {
+    const routes = deepClone(router.options.routes)
     const newAuthRoute = []
-    for (const i in router.options.routes) {
-      const root = router.options.routes[i]
+    for (const i in routes) {
+      const root = routes[i]
       if (root.meta && !this.hasAuth(root.meta.auth)) {
         root.hidden = true
         continue
