@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: '亿美数据平台',
+      title: '亿美管理平台',
       logo: logoImg
     }
   }

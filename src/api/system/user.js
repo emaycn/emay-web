@@ -55,14 +55,6 @@ export function handleResetMethod(data) {
     data: data
   })
 }
-// 所属角色
-export function alongRoles(data) {
-  return request({
-    url: '/user/allRole',
-    method: 'post',
-    data: data
-  })
-}
 // 新增用户请求
 export function addConfirm(data) {
   return request({
@@ -71,4 +63,11 @@ export function addConfirm(data) {
     data: data
   })
 }
-
+// 部门查看人员接口请求
+export function departmentchildlist(data) {
+  return request({
+    url: '/user/childlist',
+    method: 'post',
+    data: data
+  })
+}

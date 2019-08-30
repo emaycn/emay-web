@@ -41,3 +41,11 @@ export function handleDeleteMethod(data) {
     data: data
   })
 }
+// 所属角色
+export function alongRoles(data) {
+  return request({
+    url: '/role/allRole',
+    method: 'post',
+    data: data
+  })
+}

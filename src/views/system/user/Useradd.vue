@@ -70,7 +70,8 @@
   </div>
 </template>
 <script>
-import { alongRoles, addConfirm } from '@/api/system/user'// 接口
+import { alongRoles } from '@/api/system/role'// 接口
+import { addConfirm } from '@/api/system/user'// 接口
 import { treeLists, treechildrenList } from '@/api/system/department'// 接口
 import { user_name, real_name, phone, userEmail } from '@/utils/Validate' // validate 验证
 export default {

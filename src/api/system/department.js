@@ -31,15 +31,6 @@ export function departmentlist(data) {
     data: data
   })
 }
-
-// 部门查看人员接口请求
-export function departmentchildlist(data) {
-  return request({
-    url: '/department/childlist',
-    method: 'post',
-    data: data
-  })
-}
 // 部门删除接口请求
 export function departmentdelete(data) {
   return request({

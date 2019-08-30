@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <p class="title">亿美大数据平台</p>
+    <p class="title">亿美管理平台</p>
   </div>
 </template>
 <script>

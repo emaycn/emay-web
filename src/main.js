@@ -48,7 +48,7 @@ router.beforeEach(async(to, from, next) => {
 
   // 设置页面标题
   if (to.matched.length !== 0) {
-    document.title = '亿美数据平台' + (to.meta.title === undefined ? '' : ' - ' + to.meta.title)
+    document.title = '亿美管理平台' + (to.meta.title === undefined ? '' : ' - ' + to.meta.title)
   }
   // 判断是否登录时，因为页面刷新后内存中还没有token信息，额外从session中判断一次
   if (!AuthUtils.isLogin()) {

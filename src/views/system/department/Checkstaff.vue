@@ -83,7 +83,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
-import { departmentchildlist } from '@/api/system/department'
+import { departmentchildlist } from '@/api/system/user'
 export default {
   name: 'Checkstaff',
   components: {
