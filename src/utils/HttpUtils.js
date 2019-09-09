@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { MessageBox, Message } from 'element-ui'
-
+import router from '@/router'
 // 发送请求时携带cookie
 axios.defaults.withCredentials = true
 
