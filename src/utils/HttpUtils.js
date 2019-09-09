@@ -56,6 +56,13 @@ service.interceptors.response.use(response => {
     type: 'error',
     duration: 5 * 1000
   })
+  setTimeout(() => {
+    if (!error.response) {
+      if (error.message.includes('timeout')) {
+        router.push('/401')
+      }
+    }
+  }, 5000)
   return Promise.reject(error)
 })
 
