@@ -109,7 +109,7 @@
     <!-- 导入 -->
     <el-dialog title="导入" :visible.sync="dialogFormImportVisible" width="400px">
       <el-form ref="form" :model="form" status-icon>
-        <el-row class="red">注：excel第一列为“用户名,第二列为“操作模块,第三列为“内容,第四列为“操作类型”，不需要标题，样例如下：</el-row>
+        <el-row class="red">注：excel第一列为“用户名",第二列为“操作模块,第三列为“内容,第四列为“操作类型”，不需要标题，最大为5M，样例如下：</el-row>
         <el-row class="mb10"> <img :src="exlImg"></el-row>
         <el-row type="flex" justify="center">
           <el-col :span="22">
@@ -133,25 +133,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="cancelFile('form')">取消</el-button>
         <el-button size="small" type="primary" @click="importFile('form')">导入</el-button>
-      </div>
-    </el-dialog>
-    <!-- 下载导入失败详情 -->
-    <el-dialog title="导入状态" :visible.sync="dialogDownLoadVisible" width="580px">
-      <el-form ref="downloadForm" v-model="downloads" :model="downloads" label-width="130px" style="width: 350px; margin-left:50px;">
-        <el-form-item label="导入总条数:">
-          <el-input v-model="downloads.sum" disabled />
-        </el-form-item>
-        <el-form-item label="导入成功条数:">
-          <el-input v-model="downloads.success" disabled />
-        </el-form-item>
-        <el-form-item label="导入失败条数:">
-          <el-input v-model="downloads.fail" disabled />
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="cancelDownloadDialog">取消</el-button>
-        <el-button size="small" type="primary" @click="download">下载失败详情</el-button>
       </div>
     </el-dialog>
   </div>
@@ -199,14 +180,6 @@ export default {
       fileSizeIsSatisfy: true,
       form: {
         fileList: [] // 初始上传的文件
-      },
-      //  下载导入模版
-      downloadKey: '',
-      dialogDownLoadVisible: false,
-      downloads: {
-        success: '',
-        fail: '',
-        sum: ''
       }
     }
   },
@@ -301,13 +274,11 @@ export default {
           importMehtod(fd).then(response => {
             this.listLoading = false
             this.dialogFormImportVisible = false
-            const datas = response.result
-            this.downloadKey = datas.downloadKey
-            // 导入状态模态框
-            this.dialogDownLoadVisible = true
-            this.downloads.sum = datas.sum
-            this.downloads.success = datas.success
-            this.downloads.fail = datas.fail
+            this.$message({
+              message: '导入数据条数: ' + response.result,
+              type: 'success'
+            })
+            this.getList()
           }).catch((error) => {
             this.listLoading = false
             this.$message.error(error)
@@ -345,13 +316,6 @@ export default {
           message: '已取消导出'
         })
       })
-    },
-    cancelDownloadDialog() {
-      this.form.fileList = []
-      this.dialogDownLoadVisible = false
-    },
-    download() {
-      window.location.href = process.env.VUE_APP_BASE_API + 'userlog/exportError?downloadKey=' + this.downloadKey + '&AUTH-WEB-TOKEN=' + store.state.webToken.token
     }
   }
 }
