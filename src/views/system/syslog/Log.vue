@@ -230,7 +230,6 @@ export default {
     },
     search() {
       this.listQuery.start = 0
-      this.listQuery.limit = 20
       this.getList()
     },
     remove() { // 清除查询条件
