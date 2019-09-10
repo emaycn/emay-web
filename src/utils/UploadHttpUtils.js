@@ -9,15 +9,8 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   timeout: 30000 // / 设置超时时间为30s
 })
-
 service.interceptors.request.use(
   config => {
-    const data = config.data
-    if (data !== null && data !== undefined) {
-      const key = Object.keys(data).filter(name => !(data[name] === null || data[name] === undefined))
-      config.data = encodeURI(key.map(name => `${name}=${data[name]}`).join('&'))
-    }
-    config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
     config.headers['x-requested-with'] = 'XMLHttpRequest'
     if (store.state.webToken.token !== null) {
       config.headers['AUTH-WEB-TOKEN'] = store.state.webToken.token
