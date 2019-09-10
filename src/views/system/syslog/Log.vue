@@ -110,7 +110,7 @@
     <el-dialog title="导入" :visible.sync="dialogFormImportVisible" width="400px">
       <el-form ref="form" :model="form" status-icon>
         <el-row class="red">注：excel第一列为“用户名,第二列为“操作模块,第三列为“内容,第四列为“操作类型”，不需要标题，样例如下：</el-row>
-        <el-row> <img :src="exlImg"></el-row>
+        <el-row class="mb10"> <img :src="exlImg"></el-row>
         <el-row type="flex" justify="center">
           <el-col :span="22">
             <el-form-item label="上传文件:">
@@ -363,6 +363,9 @@ export default {
 }
 .red{
   color:red;
-  margin-bottom:6px;
+  margin-bottom:10px;
+}
+.mb10{
+  margin-bottom:10px;
 }
 </style>
