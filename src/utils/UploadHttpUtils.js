@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { MessageBox, Message } from 'element-ui'
 import router from '@/router'
+import SessionStorageUtils from '@/utils/SessionStorageUtils'
 // 发送请求时携带cookie
 axios.defaults.withCredentials = true
 
@@ -24,12 +25,14 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(response => {
   if (!response.data.success) {
-    if (response.data.code === -222) {
+    if (response.data.code === '-222') {
       MessageBox.confirm('您已经登出，请登出后再次登录', '确认登出', {
         confirmButtonText: '重新登录',
         type: 'warning'
       }).then(() => {
         store.commit('LOGOUT')
+        SessionStorageUtils.setStore()
+        router.push(`/login`)
       })
     } else {
       Message({
