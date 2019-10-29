@@ -37,6 +37,7 @@ service.interceptors.response.use(response => {
         type: 'warning'
       }).then(() => {
         store.commit('LOGOUT')
+        router.push(`/login`)
       })
     } else {
       Message({
