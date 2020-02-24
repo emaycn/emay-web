@@ -28,7 +28,6 @@ export default {
         },
         {
           id: 113,
-          auth: 'SMS_MESSAGE',
           label: '信息管理', // 二级
           children: [
             // 短信明细
@@ -290,56 +289,15 @@ export default {
           id: 101,
           label: '应用查看',
           auth: 'CLIENT_APP_VIEW'
-        },
-        { // 三级
-          id: 102,
-          label: '应用详情查看',
-          auth: 'CLIENT_APP_INFO'
-        }]
+        }
+        ]
       }, {
         id: 116,
         label: '信息管理', // 二级
-        auth: 'CLIENT_MESSAGE_MANAGE',
         children: [{ // 三级
-          id: 104,
-          label: '批量短信查看',
-          auth: 'CLIENT_BATCHMESSAGE_VIEW'
-        }, { // 三级
-          id: 105,
-          label: '上行短信查看',
-          auth: 'CLIENT_MO_VIEW'
-        }, { // 三级
           id: 106,
           label: '短信详情查看',
           auth: 'CLIENT_MESSAGE_VIEW'
-        }, { // 三级
-          id: 107,
-          label: '审核短信查看',
-          auth: 'CLIENT_AUDTING_VIEW'
-        }, { // 三级
-          id: 108,
-          label: '定是短信查看',
-          auth: 'CLIENT_TIMER_VIEW'
-        }]
-      }, {
-        id: 117,
-        auth: 'CLIENT_REPORT_MANAGE',
-        label: '统计分析', // 二级
-        children: [{ // 三级
-          id: 110,
-          label: '应用报表',
-          auth: 'CLIENT_REPORT_APP'
-        }, { // 三级
-          id: 111,
-          label: '整体报表',
-          auth: 'CLIENT_REPORT_ALL'
-        }]
-      }, {
-        label: '信息发送', // 二级
-        children: [{ // 三级
-          id: 109,
-          label: '页面发送',
-          auth: 'CLIENT_PAGE_SEND'
         }]
       }]
     }, {
