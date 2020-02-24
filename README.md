@@ -19,5 +19,9 @@ emay-web 是以 [vue-element-admin](http://172.16.11.138/component/open/vue-elem
 
 # 其他
 1. 可以在 https://www.iconfont.cn 找图标
-2. 系统账号密码 admin/qwe123
-3. 打包后是纯静态文件，推荐试用nginx部署，可参照 nginx/nginx.conf 
+2. 打包后是纯静态文件，推荐试用nginx部署，可参照 nginx/nginx.conf 
+
+# 进入系统
+1. 管理端地址  http://127.0.0.1:8080
+2. 客户端地址  http://127.0.0.1:8070
+3. 管理段账号密码 admin/待定
