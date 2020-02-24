@@ -24,4 +24,4 @@ emay-web 是以 [vue-element-admin](http://172.16.11.138/component/open/vue-elem
 # 进入系统
 1. 管理端地址  http://127.0.0.1:8080
 2. 客户端地址  http://127.0.0.1:8070
-3. 管理段账号密码 admin/待定
+3. 管理段账号密码 admin/JDYqwe!@#

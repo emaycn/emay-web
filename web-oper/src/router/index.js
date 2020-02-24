@@ -106,7 +106,7 @@ const smsRoutes = [
         path: '/sms/message/index',
         component: () => import('@/views/sms/message/Index'),
         name: 'MessageIndex',
-        meta: { title: '信息管理', icon: 'international', auth: 'SMS_MESSAGE' }
+        meta: { title: '信息管理', icon: 'international', auth: 'MESSAGE_VIEW' }
       }
     ]
   }
