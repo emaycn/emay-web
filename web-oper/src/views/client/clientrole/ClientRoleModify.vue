@@ -181,9 +181,11 @@ export default {
         const roleType = this.$route.query.roleType
         let arr
         if (roleType === 'OPER') {
-          arr = this.$refs['tree'].getCheckedKeys()
+          //  arr = this.$refs['tree'].getCheckedKeys()
+          arr = this.$refs['tree'].getCheckedKeys().concat(this.$refs['tree'].getHalfCheckedKeys())
         } else {
-          arr = this.$refs['treesales'].getCheckedKeys()
+          //  arr = this.$refs['treesales'].getCheckedKeys()
+          arr = this.$refs['treesales'].getCheckedKeys().concat(this.$refs['treesales'].getHalfCheckedKeys())
         }
         var newArr = []
         arr.forEach(item => {
